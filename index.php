@@ -1,58 +1,52 @@
 <?php
 
+// suggestions for name: virtual signup sheet, electronic signup sheet, digital, simple signup sheet
+// there are big problems with last and first weeks of the year. events are not displayed...
+// make one master html template (stylesheets, javascript, header, footer) and then do the rest of the stuff in includes (read about this)
+// private calendars
+
+// including F3 required file
 require __DIR__.'/lib/base.php';
 
+// including configuration file
+require __DIR__.'/config.php';
+
+// doing neccessary(?) F3 stuff
 F3::set('CACHE',FALSE);
 F3::set('DEBUG',1);
 F3::set('UI','ui/');
 F3::set('AUTOLOAD','lib/');
 
+// establishing DB connection(?)
 F3::set('DB',
 	new DB(
-			'mysql:host=localhost;port=3306;dbname=horner_frog',
-			'horner',
-			'42154215'
+			'mysql:host=localhost;port=3306;dbname='.$db_name,
+			$username,
+			$password
 			)
 );
 
 
-F3::set('table', 'events');
 
-$routes= array (
-			"default" => "events",
-			"jan-olav" => "janolav",
-			"some-other" => "someother"
-		);
-
-if(isset($_SERVER['HTTP_REFERER'])) {
-	$referer=explode('/', $_SERVER['HTTP_REFERER']);
-	foreach($referer as $r) {
-		if($r=="jan-olav"){
-			F3::set('table', 'janolav');
-		}
-	}
-}
-
-$uri=explode('/', $_SERVER['REQUEST_URI']);
-foreach($uri as $u) {
-	if($u=="jan-olav"){
-		F3::set('table', 'janolav');
-	}
-}
-
+//display default. For now it is Julius' default calendar. Ultimately list users and their calendars
 F3::route('GET /', 'Lesson::display');
+
+// if calendar id is set then display particular calendar
+F3::route('GET /@calendarId', 'Lesson::display');
+
+
+// create admin site to create new calendars, to edit existing ones, archive/delete old ones.
 // F3::route('GET /admin', 'Lesson::displayAdmin');
 // F3::route('GET /admin/new-calendar', 'Lesson::newCalendar');
  
 
-F3::route('GET /jan-olav', 'Lesson::display');
-// F3::route('GET /@calendarId', 'Lesson::display');
-
-
+ 
+// the route to ajax-book a lesson
 F3::route('POST /book', 'Lesson::book');
-// F3::route('POST /book/@calendarId/@lessonId', 'Lesson::book');
 
 
+
+// admin features
 F3::route('GET /new', 'Lesson::displayNewForm');
 F3::route('POST /some', 'Lesson::deleteLesson');
 
@@ -60,4 +54,3 @@ F3::route('POST /some', 'Lesson::deleteLesson');
 
 F3::run();
 
-?>

@@ -4,7 +4,15 @@ class Lesson {
 	
 	// retrieves entries for lessons from the database
 	static function getLessons() {
-	
+		
+		
+		// messy calendarId checking. Unnecesarilly using 2 variables. Rewrite.
+		$calendarId = F3::get('PARAMS["calendarId"]');
+		$calendarId = (int)$calendarId;
+		$cid = is_int((int)$calendarId)?$calendarId:0;
+		
+		// would be nice to trigger an error and report that the hacker was sent to default calendar when input is invalid or there is no such calendarId
+		
 		F3::set('lessons', DB::sql('SELECT 
 					title, 
 					YEAR(event_date) as year, 
@@ -12,23 +20,35 @@ class Lesson {
 					DATE_FORMAT(event_date, "%H:%i") as time, 
 					WEEK(event_date) as week, 
 					id  
-				FROM '. 
-					F3::get('table')
-				.' WHERE
+				FROM 
+					events
+				WHERE
 					event_date > NOW()
+					AND
+					calendar_id = '.$cid.'
 				ORDER BY
 					event_date
 					asc'));
 					
 					
 	}
+	
+	static function listUsers() {
+		$lesson = new Axon('users');
+		// need a template
+		// need to fill an array with values
+		// serve template
+		
+	}
+	
+	
 	// runs through weeks and makes an array of unique weeks. should be named differently because it only makes week number array
 	static function getWeekNumbers() {
 		
 		// set current week
 		$currentWeek = 0;
-		
-		// go though all entries
+		$weeks = array();
+		// go through all entries
 		foreach(F3::get('lessons') as $row) {
 			// if current week is not the same as running week add it to array
 			if($currentWeek != $row['week'])
@@ -66,7 +86,7 @@ class Lesson {
 	
 	static function book() {
 	
-		$lesson = new Axon(F3::get('table'));
+		$lesson = new Axon('events');
 		$id=$_POST['id'];
 		$lesson->load('id='.$id);
 		
@@ -103,7 +123,7 @@ class Lesson {
 	}
 	
 	function deleteLesson() { 
-		Lesson::display();
+
 	}
 	
 	// renders a view from template 

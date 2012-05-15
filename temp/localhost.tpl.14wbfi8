@@ -1,22 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<!DOCTYPE html>
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<!--<link rel="stylesheet" type="text/css" href="ui/style.css" />
-	<link rel="stylesheet" type="text/css" href="ui/colorbox.css" />
-	<link type="text/css" href="ui/ui-lightness/jquery-ui-1.8.7.custom.css" rel="Stylesheet" />
-	-->
-	<!-- <link rel="stylesheet" type="text/css" href="/min?base=/ui&amp;files=style.css,colorbox.css,ui-lightness/jquery-ui-1.8.7.custom.css"/>	-->
 	
 	<script src="ui/js/jquery.js" type="text/javascript"></script>
-	<script src="uijs/jquery-ui.js" type="text/javascript"></script>
+	<script src="ui/js/jquery-ui.js" type="text/javascript"></script>
 	<script src="ui/js/jeditable.js" type="text/javascript"></script>  
-	<script src="ui/js/jquery.tools.min.js"></script>
-	<script src="ui/js/jquery.colorbox.js" type="text/javascript"></script>  
-	<script src="ui/js/jquery.form.js" type="text/javascript"></script>  
-	<script src="ui/js/jconfirmaction.jquery.js" type="text/javascript"></script>  
-
-	<script src="ui/js/myjs.php" type="text/javascript"></script>  
+	<script src="ui/js/myjs.js" type="text/javascript"></script>  
 	<!--
 	<script type="text/javascript"
 				src="/min?base={@GUI}js/&amp;files=jquery.js,myjs.js">
@@ -30,15 +20,14 @@
 	<?php if (is_array(($_weeks=F3::get('weeks')))):foreach ((($_weeks=F3::get('weeks'))?:array()) as $_week):?>
 		<div class="week"><h2>Week <?php echo $_week; ?></h2></div>
 		<?php if (is_array(($_lessons=F3::get('lessons')))):foreach ((($_lessons=F3::get('lessons'))?:array()) as $_item):?>
-			<!-- if event belongs to the year and week, print it -->
-			<!-- format only month, day and time -->
+			<!-- if event belongs to the week, print it -->
 			<?php if ($_item['week'] == $_week): ?>
 				
 				<div>
 					<span><i><?php echo $_item['date']; ?></i> <?php echo $_item['time']; ?></span>
 					<b><div class="edit" id="<?php echo $_item['id']; ?>"><?php echo $_item['title']; ?></div></b>
-					
 				</div>
+				
 				
 			<?php endif; ?>
 			<!-- print the name for event, with AJAX inline editing -->

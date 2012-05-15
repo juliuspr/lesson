@@ -34,33 +34,6 @@ $(document).ready(function() {
 	
 	});
 	
-
-
-
-	$(".add-new").colorbox({
-		inline:true, 
-		href:"#add-new"
-	});
-	
-	$(".event-book").colorbox({
-		inline:true, 
-		href:"#edit-booking"
-	});
-	$(".event-unbook").colorbox({
-		inline:true, 
-		href:"#edit-unbooking"
-	});
-	$(".event_add_comment").colorbox({
-		inline:true, 
-		href:"#edit_add_comment"
-	});
-	$(".event_move").colorbox({
-		inline:true, 
-		href:"#edit_move"
-	});
-	
-
-	
 	
 	
  });
