@@ -13,6 +13,7 @@ require __DIR__.'/config.php';
 
 // doing neccessary(?) F3 stuff
 F3::set('CACHE',FALSE);
+// set to 0 on production site
 F3::set('DEBUG',1);
 F3::set('UI','ui/');
 F3::set('AUTOLOAD','lib/');
@@ -49,7 +50,7 @@ F3::route('POST /book', 'Lesson::book');
 // admin features
 F3::route('GET /new', 'Lesson::displayNewForm');
 F3::route('POST /some', 'Lesson::deleteLesson');
-
+//just testing
 
 
 F3::run();
