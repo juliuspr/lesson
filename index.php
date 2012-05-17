@@ -50,7 +50,6 @@ F3::route('POST /book', 'Lesson::book');
 // admin features
 F3::route('GET /new', 'Lesson::displayNewForm');
 F3::route('POST /some', 'Lesson::deleteLesson');
-//just testing
 
 
 F3::run();

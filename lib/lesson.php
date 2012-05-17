@@ -2,18 +2,15 @@
 
 class Lesson {
 	
-	// retrieves entries for lessons from the database
+	// retrieves entries for lessons from the database. For now mixing up model and controller of MVC...
 	static function getLessons() {
 		
-		
-		// messy calendarId checking. Unnecesarilly using 2 variables. Rewrite.
-		$calendarId = F3::get('PARAMS["calendarId"]');
-		$calendarId = (int)$calendarId;
-		$cid = is_int((int)$calendarId)?$calendarId:0;
-		
-		// would be nice to trigger an error and report that the hacker was sent to default calendar when input is invalid or there is no such calendarId
-		
-		F3::set('lessons', DB::sql('SELECT 
+		if(Lesson::isValidCalendarId()) {
+			// is ID set at all, if not make it 0. Only imoportant until the default page is not Julius calendar but calendar/user list 
+			$cid = F3::get('PARAMS["calendarId"]') ? F3::get('PARAMS["calendarId"]') : 0;
+			
+			// proceed to select events for that calendar
+			F3::set('lessons', DB::sql('SELECT 
 					title, 
 					YEAR(event_date) as year, 
 					DATE_FORMAT(event_date, "%W, %e.%c") as date, 
@@ -29,8 +26,29 @@ class Lesson {
 				ORDER BY
 					event_date
 					asc'));
+			// if no lessons are selected show a page saying there are no lessons
+			if(!F3::get('lessons')) {
+				echo Template::serve('nothing.htm');
+				exit();
+			}
+		} else {
+			// display error page
+			echo Template::serve('error.htm');
+			exit();
+		}
+		
+				
+		
 					
 					
+	}
+	
+	// checking whether calendarId is an integer. As of now it has to be an integer. Later implement short titles instead of numbers.
+	static function isValidCalendarId() {
+		if(preg_match("/^[0-9]*$/", F3::get('PARAMS["calendarId"]')))
+			return true;
+		else
+			return false;
 	}
 	
 	static function listUsers() {
@@ -91,14 +109,23 @@ class Lesson {
 		$lesson->load('id='.$id);
 		
 		// maybe would be smart to clean-up the input
-		$lesson->title = $_POST['title'];
+		$lesson->title = Lesson::filterInput($_POST['title']);
 		$lesson->save();
 		//$lesson->email();
 		// this echoes what user inputed, and avoids pulling it from database.
 		echo $lesson->title;
 	}
 	
-
+	static function filterInput($str) {
+		// Ensure it's a string
+		$str = strval($str);
+		// We strip all html tags
+		$str = strip_tags($str);
+		// Remove any whitespace using
+		// the define method above
+		$str = preg_replace('/\s\s+/',' ', $str);
+		return $str;
+	}
 	
 	static function email() {
 		F3::set('from','no-reply@juliuspranevicius.com');
@@ -122,7 +149,7 @@ class Lesson {
 		// echo $lesson->title;
 	}
 	
-	function deleteLesson() { 
+	static function deleteLesson() { 
 
 	}
 	
