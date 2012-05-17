@@ -30,10 +30,10 @@ F3::set('DB',
 
 
 //display default. For now it is Julius' default calendar. Ultimately list users and their calendars
-F3::route('GET /', 'Lesson::display');
+F3::route('GET /', 'Lesson::displayCalendar');
 
 // if calendar id is set then display particular calendar
-F3::route('GET /@calendarId', 'Lesson::display');
+F3::route('GET /@calendarId', 'Lesson::displayCalendar');
 
 
 // create admin site to create new calendars, to edit existing ones, archive/delete old ones.

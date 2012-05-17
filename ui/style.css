@@ -170,3 +170,17 @@ table {
 .week {
 	text-decoration: underline;
 }
+
+.edit {
+
+}
+
+h4 {
+	margin-bottom: 3px;
+	padding-bottom: 3px;
+}
+
+.date {
+	float:left;
+}
+

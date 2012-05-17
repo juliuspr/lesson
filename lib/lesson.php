@@ -2,45 +2,52 @@
 
 class Lesson {
 	
-	// retrieves entries for lessons from the database. For now mixing up model and controller of MVC...
+	// retrieves entries for lessons from the database. Needs calanedarId from url. Returns array from DB with lessons
 	static function getLessons() {
+	
+		// is ID set at all, if not make it 0. Only imoportant until the default page is not Julius calendar but calendar/user list 
+		$cid = F3::get('PARAMS["calendarId"]') ? F3::get('PARAMS["calendarId"]') : 0;
+	
+		// proceed to select events for that calendar
+		return DB::sql('SELECT 
+				title, 
+				YEAR(event_date) as year, 
+				DATE_FORMAT(event_date, "%W, %e.%c") as date, 
+				DATE_FORMAT(event_date, "%H:%i") as time, 
+				WEEK(event_date) as week, 
+				id  
+			FROM 
+				events
+			WHERE
+				event_date > NOW()
+				AND
+				calendar_id = '.$cid.'
+			ORDER BY
+				event_date
+				asc');
+	}
+	
+	static function displayCalendar() {
 		
 		if(Lesson::isValidCalendarId()) {
-			// is ID set at all, if not make it 0. Only imoportant until the default page is not Julius calendar but calendar/user list 
-			$cid = F3::get('PARAMS["calendarId"]') ? F3::get('PARAMS["calendarId"]') : 0;
+	
+			F3::set('lessons', Lesson::getLessons());
 			
-			// proceed to select events for that calendar
-			F3::set('lessons', DB::sql('SELECT 
-					title, 
-					YEAR(event_date) as year, 
-					DATE_FORMAT(event_date, "%W, %e.%c") as date, 
-					DATE_FORMAT(event_date, "%H:%i") as time, 
-					WEEK(event_date) as week, 
-					id  
-				FROM 
-					events
-				WHERE
-					event_date > NOW()
-					AND
-					calendar_id = '.$cid.'
-				ORDER BY
-					event_date
-					asc'));
 			// if no lessons are selected show a page saying there are no lessons
 			if(!F3::get('lessons')) {
 				echo Template::serve('nothing.htm');
 				exit();
 			}
+			
+			echo F3::render('calendar2.htm');	
 		} else {
 			// display error page
 			echo Template::serve('error.htm');
 			exit();
 		}
 		
-				
 		
-					
-					
+			
 	}
 	
 	// checking whether calendarId is an integer. As of now it has to be an integer. Later implement short titles instead of numbers.
@@ -51,7 +58,15 @@ class Lesson {
 			return false;
 	}
 	
+	static function getUsers() {
+	
+	}
+	
+	
 	static function listUsers() {
+	
+		// get users. write a method
+		// serve user list to template
 		$lesson = new Axon('users');
 		// need a template
 		// need to fill an array with values
@@ -67,6 +82,16 @@ class Lesson {
 		$currentWeek = 0;
 		$weeks = array();
 		// go through all entries
+		// $tmp = array();
+		$les = F3::get('lessons');
+		// foreach ($les as $row) 
+			// if (!in_array($row,$tmp)) array_push($tmp,$row);
+		
+		// echo "<pre>";
+		// print_r($les);
+		// print_r($tmp);
+		// echo "</pre>";
+		
 		foreach(F3::get('lessons') as $row) {
 			// if current week is not the same as running week add it to array
 			if($currentWeek != $row['week'])
@@ -159,7 +184,7 @@ class Lesson {
 		Lesson::getLessons();
 		Lesson::getWeekNumbers();
 		
-		echo Template::serve('template.htm');
+		echo Template::serve('calendar.htm');
 	}
 	
 	static function displayNewForm() {

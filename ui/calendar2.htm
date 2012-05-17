@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	
+	<script src="ui/js/jquery.js" type="text/javascript"></script>
+	<script src="ui/js/jquery-ui.js" type="text/javascript"></script>
+	<script src="ui/js/jeditable.js" type="text/javascript"></script>  
+	<script src="ui/js/myjs.js" type="text/javascript"></script>  
+	<!--
+	<script type="text/javascript"
+				src="/min?base={@GUI}js/&amp;files=jquery.js,myjs.js">
+			</script> -->
+	<title>Lesson booking</title>
+</head>
+<body>
+
+<?php 
+	$lessons = F3::get('lessons');
+
+	$current_week = 0;
+	$current_date = '';
+	foreach($lessons as $lesson) {
+		
+		if($current_week != $lesson['week']) {
+			echo '<div style="clear:both" class="week"><h2>Week '.$lesson['week'].'</h2></div>';
+			$current_week = $lesson['week'];
+		}
+		
+		if($current_date!=$lesson['date']) {
+			echo '<h4 style="clear:both; padding:5px; padding-bottom: 0px;margin:0px;margin-top:5px;"><i>'.$lesson['date'].'</i></h4>';
+			$current_date = $lesson['date'];
+		}
+			
+?>
+		<div style="display:block; padding:5px; padding-left:15px;">
+			<span style="float:left;"><?php echo $lesson['time']; ?></span>
+			<span style="display:inline; float: left" class="edit" id="<?php echo $lesson['id']; ?>"><?php echo $lesson['title']; ?></span>
+		</div><br />
+<?php	
+	}
+	
+?>
+
+</body>
+</html>

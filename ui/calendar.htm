@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	
+	<script src="ui/js/jquery.js" type="text/javascript"></script>
+	<script src="ui/js/jquery-ui.js" type="text/javascript"></script>
+	<script src="ui/js/jeditable.js" type="text/javascript"></script>  
+	<script src="ui/js/myjs.js" type="text/javascript"></script>  
+	<!--
+	<script type="text/javascript"
+				src="/min?base={@GUI}js/&amp;files=jquery.js,myjs.js">
+			</script> -->
+	<title>Lesson booking</title>
+</head>
+<body>
+
+<!-- make a loop for weeks and display only those weeks which have events -->
+<!-- run week loop, to display week numbers-->
+<F3:repeat group="{{@weeks}}" value="{{@week}}">
+	<div class="week"><h2>Week {{@week}}</h2></div>
+	<F3:repeat group="{{@lessons}}" value="{{@item}}">
+		<!-- if event belongs to the week, print it -->
+		<F3:check if="{{@item.week == @week}}">
+			<F3:true>
+			<div>
+				<span><i>{{@item.date}}</i> {{@item.time}}</span>
+				<b><div class="edit" id="{{@item.id}}">{{@item.title}}</div></b>
+			</div>
+			
+			</F3:true>
+		</F3:check>
+		<!-- print the name for event, with AJAX inline editing -->
+	</F3:repeat>
+</F3:repeat>
+
+<F3:repeat group="{{@lessons}}" value="{{@item}}">
+	<!-- is this new week? If yes, print week number, set current week -->
+	<F3:check if="{{@item.week == @current_week}}">
+		<F3:true>
+			<div class="week"><h2>Week {{@item.week}}</h2></div>
+			<?php F3::set('current_week', {{@item.week}}); echo '{{@item.week}}gdfgjkl'; ?>
+		</F3:true>
+	</F3:check>
+	<!-- is this a new day? If yes, print date, set current date -->
+	<F3:check if="{{@item.week == @current_date}}">
+		<F3:true>
+			<div><i>{{@item.date}}</i></div>
+		</F3:true>
+	</F3:check>
+	<div>
+		<div>{{@item.time}}
+		<b><div class="edit" id="{{@item.id}}">{{@item.title}}</div></b>
+	</div>
+</F3:repeat>
+
+
+</body>
+</html>
