@@ -11,10 +11,10 @@
 	<script type="text/javascript"
 				src="/min?base={@GUI}js/&amp;files=jquery.js,myjs.js">
 			</script> -->
-	<title>Lesson booking</title>
+	<title>Lesson booking - <?php echo F3::get('calendar["name"]'); ?></title>
 </head>
 <body>
-
+<h2><?php echo F3::get('calendar["name"]'); ?></h2>
 <?php 
 	$lessons = F3::get('lessons');
 
@@ -23,7 +23,7 @@
 	foreach($lessons as $lesson) {
 		
 		if($current_week != $lesson['week']) {
-			echo '<div style="clear:both" class="week"><h2>Week '.$lesson['week'].'</h2></div>';
+			echo '<div style="clear:both" class="week"><h2 style="padding-bottom: 0px; margin-bottom: 5px;">Week '.$lesson['week'].'</h2></div>';
 			$current_week = $lesson['week'];
 		}
 		
@@ -34,7 +34,7 @@
 			
 ?>
 		<div style="display:block; padding:5px; padding-left:15px;">
-			<span style="float:left;"><?php echo $lesson['time']; ?></span>
+			<span style="float:left; padding-right:5px;"><?php echo $lesson['time']; ?></span>
 			<span style="display:inline; float: left" class="edit" id="<?php echo $lesson['id']; ?>"><?php echo $lesson['title']; ?></span>
 		</div><br />
 <?php	

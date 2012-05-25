@@ -27,10 +27,13 @@ class Lesson {
 				asc');
 	}
 	
+	static function getCalendarInfo($calendarId) {
+		return DB::sql('SELECT name, description from calendars WHERE id='.$calendarId);
+	}
+	
 	static function displayCalendar() {
 		
 		if(Lesson::isValidCalendarId()) {
-	
 			F3::set('lessons', Lesson::getLessons());
 			
 			// if no lessons are selected show a page saying there are no lessons
@@ -38,7 +41,10 @@ class Lesson {
 				echo Template::serve('nothing.htm');
 				exit();
 			}
+			// fetch title from DB
 			
+			F3::set('calendar', Lesson::getCalendarInfo(F3::get('PARAMS["calendarId"]')));
+			// output lessons for requested calendar
 			echo F3::render('calendar2.htm');	
 		} else {
 			// display error page
@@ -50,6 +56,48 @@ class Lesson {
 			
 	}
 	
+	/*
+	* finds users who have calendars
+	*/
+	static function getUsers() {
+		return DB::sql('SELECT DISTINCT owners.name, owners.id FROM owners, calendars WHERE owners.id = calendars.owner_id');
+	}
+	
+	/*
+	* displays users who have calendars
+	*/
+	static function displayAllUsers() {
+		F3::set('users', Lesson::getUsers());
+		echo Template::serve('display_users.htm');
+	}
+	
+	/*
+	* finds calendars for a user. Need to chack for valid Id (here or in displayUsers?)
+	*/
+	static function getCalendars($userId) {
+		return DB::sql('SELECT calendars.name, calendars.description, calendars.id FROM calendars WHERE calendars.owner_id = '.$userId);
+	}
+	
+	/*
+	* displays calendars for a specified user. Takes id from global variable 
+	*/
+	static function displayCalendars() {
+		if(Lesson::isValidUserId()) {
+			F3::set('calendars', Lesson::getCalendars(F3::get('PARAMS["userId"]')));
+			echo Template::serve('display_calendars.htm');
+		// serveTemplate
+		} else {
+			echo Template::serve('error.htm');
+		}
+	}
+	
+	static function displayUsersAndCalendars() {
+		getUsers();
+		getCalendars();
+		// put everything together
+		
+	}
+	
 	// checking whether calendarId is an integer. As of now it has to be an integer. Later implement short titles instead of numbers.
 	static function isValidCalendarId() {
 		if(preg_match("/^[0-9]*$/", F3::get('PARAMS["calendarId"]')))
@@ -58,74 +106,13 @@ class Lesson {
 			return false;
 	}
 	
-	static function getUsers() {
-	
+	static function isValidUserId() {
+		if(preg_match("/^[0-9]*$/", F3::get('PARAMS["userId"]')))
+			return true;
+		else
+			return false;
 	}
-	
-	
-	static function listUsers() {
-	
-		// get users. write a method
-		// serve user list to template
-		$lesson = new Axon('users');
-		// need a template
-		// need to fill an array with values
-		// serve template
-		
-	}
-	
-	
-	// runs through weeks and makes an array of unique weeks. should be named differently because it only makes week number array
-	static function getWeekNumbers() {
-		
-		// set current week
-		$currentWeek = 0;
-		$weeks = array();
-		// go through all entries
-		// $tmp = array();
-		$les = F3::get('lessons');
-		// foreach ($les as $row) 
-			// if (!in_array($row,$tmp)) array_push($tmp,$row);
-		
-		// echo "<pre>";
-		// print_r($les);
-		// print_r($tmp);
-		// echo "</pre>";
-		
-		foreach(F3::get('lessons') as $row) {
-			// if current week is not the same as running week add it to array
-			if($currentWeek != $row['week'])
-			{
-				$currentWeek = $row['week'];
-				// array of unique weeks
-				$weeks[]=$currentWeek;
-			}
-		}
-		// $currentYear = 0;
-		// $currentWeek = 0;
-		// $i = 0;
-		// foreach(F3::get('lessons') as $y) {
-			// if($currentYear != $y['year']) {
-			// $currentYear = $y['year'];
-			// $years[] = $currentYear;
-				// foreach(F3::get('lessons') as $row) {
-					// if($currentWeek != $row['week'] && $currentYear == $row['year'])
-					// {
-						// $currentWeek = $row['week'];
-						// $weeks['y'.$currentYear][]=$currentWeek;
-					// }
-				// }
-			// }
-			// $i++;
-		// }
-		
-		// "return" array of weeks
-		F3::set('weeks', $weeks);
-		//F3::set('years', $years);
-		// account for weeks in different years (for now just by not ordering by year at all
-		// f.ex. multidimensional array, with year as index, and maybe one function would be enough. As first index goes for years, the second for weeks. No idea how to render this in template...
-		
-		}
+
 	
 	static function book() {
 	
@@ -133,12 +120,14 @@ class Lesson {
 		$id=$_POST['id'];
 		$lesson->load('id='.$id);
 		
-		// maybe would be smart to clean-up the input
 		$lesson->title = Lesson::filterInput($_POST['title']);
 		$lesson->save();
-		//$lesson->email();
+		
 		// this echoes what user inputed, and avoids pulling it from database.
 		echo $lesson->title;
+		
+		//$lesson->email();
+		
 	}
 	
 	static function filterInput($str) {
@@ -178,14 +167,6 @@ class Lesson {
 
 	}
 	
-	// renders a view from template 
-	static function display() {
-		
-		Lesson::getLessons();
-		Lesson::getWeekNumbers();
-		
-		echo Template::serve('calendar.htm');
-	}
 	
 	static function displayNewForm() {
 	

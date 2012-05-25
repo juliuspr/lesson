@@ -1,7 +1,7 @@
 <?php
 
 // suggestions for name: virtual signup sheet, electronic signup sheet, digital, simple signup sheet
-// there are big problems with last and first weeks of the year. events are not displayed...
+// there are problems with last and first weeks of the year. events are not displayed...
 // make one master html template (stylesheets, javascript, header, footer) and then do the rest of the stuff in includes (read about this)
 // private calendars
 
@@ -18,6 +18,17 @@ F3::set('DEBUG',1);
 F3::set('UI','ui/');
 F3::set('AUTOLOAD','lib/');
 
+//F3::set('ONERROR','myErrorHandler');
+function myErrorHandler() {
+	// custom error handler code goes here
+	// use this if u want to display errors in a
+	// format consistent with your site's theme
+	//echo "Sorry about an error";
+}
+
+// sanitize $_REQUEST here
+
+
 // establishing DB connection(?)
 F3::set('DB',
 	new DB(
@@ -29,11 +40,13 @@ F3::set('DB',
 
 
 
-//display default. For now it is Julius' default calendar. Ultimately list users and their calendars
+//display default start page. For now it is Julius' default calendar. Ultimately list users and their calendars
 F3::route('GET /', 'Lesson::displayCalendar');
 
 // if calendar id is set then display particular calendar
 F3::route('GET /@calendarId', 'Lesson::displayCalendar');
+F3::route('GET /users', 'Lesson::displayAllUsers');
+F3::route('GET /user/@userId', 'Lesson::displayCalendars');
 
 
 // create admin site to create new calendars, to edit existing ones, archive/delete old ones.

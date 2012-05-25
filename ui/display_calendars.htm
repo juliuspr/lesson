@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	
+	<script src="ui/js/jquery.js" type="text/javascript"></script>
+	<script src="ui/js/jquery-ui.js" type="text/javascript"></script>
+	<script src="ui/js/jeditable.js" type="text/javascript"></script>  
+	<script src="ui/js/myjs.js" type="text/javascript"></script>  
+	<!--
+	<script type="text/javascript"
+				src="/min?base={@GUI}js/&amp;files=jquery.js,myjs.js">
+			</script> -->
+	<title>User list</title>
+</head>
+<body>
+	<ul>
+	<F3:repeat group="{{@calendars}}" value="{{@item}}">
+		<li>
+			<a href="{{@BASE}}/{{@item.id}}">{{@item.name}}</a> {{@item.description}}
+		</li>
+	</F3:repeat>
+	</ul>
+
+</body>
+</html>
