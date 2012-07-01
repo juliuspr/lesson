@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	
+	<script src="ui/js/jquery.js" type="text/javascript"></script>
+	<script src="ui/js/jquery-ui.js" type="text/javascript"></script>
+	<script src="ui/js/jeditable.js" type="text/javascript"></script>  
+	<script src="ui/js/myjs.js" type="text/javascript"></script>  
+	<!--
+	<script type="text/javascript"
+				src="/min?base={@GUI}js/&amp;files=jquery.js,myjs.js">
+			</script> -->
+	<title>User list</title>
+</head>
+<body>
+	<ul>
+	<?php if (is_array(($_users=F3::get('users')))):foreach ((($_users=F3::get('users'))?:array()) as $_item):?>
+		<li>
+			<a href="<?php echo ($_BASE=F3::get('BASE')); ?>/user/<?php echo $_item['id']; ?>"><?php echo $_item['name']; ?></a>
+		</li>
+	<?php endforeach;endif;?>
+	</ul>
+
+</body>
+</html>

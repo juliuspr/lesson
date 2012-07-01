@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	
+	<script src="ui/js/jquery.js" type="text/javascript"></script>
+	<script src="ui/js/jquery-ui.js" type="text/javascript"></script>
+	<script src="ui/js/jeditable.js" type="text/javascript"></script>  
+	<script src="ui/js/myjs.js" type="text/javascript"></script>  
+	<!--
+	<script type="text/javascript"
+				src="/min?base={@GUI}js/&amp;files=jquery.js,myjs.js">
+			</script> -->
+	<title>Lesson booking</title>
+</head>
+<body>
+
+<!-- make a loop for weeks and display only those weeks which have events -->
+<!-- run week loop, to display week numbers-->
+<?php if (is_array(($_weeks=F3::get('weeks')))):foreach ((($_weeks=F3::get('weeks'))?:array()) as $_week):?>
+	<div class="week"><h2>Week <?php echo $_week; ?></h2></div>
+	<?php if (is_array(($_lessons=F3::get('lessons')))):foreach ((($_lessons=F3::get('lessons'))?:array()) as $_item):?>
+		<!-- if event belongs to the week, print it -->
+		<?php if ($_item['week'] == $_week): ?>
+			
+			<div>
+				<span><i><?php echo $_item['date']; ?></i> <?php echo $_item['time']; ?></span>
+				<b><div class="edit" id="<?php echo $_item['id']; ?>"><?php echo $_item['title']; ?></div></b>
+			</div>
+			
+			
+		<?php endif; ?>
+		<!-- print the name for event, with AJAX inline editing -->
+	<?php endforeach;endif;?>
+<?php endforeach;endif;?>
+
+<?php if (is_array(($_lessons=F3::get('lessons')))):foreach ((($_lessons=F3::get('lessons'))?:array()) as $_item):?>
+	<!-- is this new week? If yes, print week number, set current week -->
+	<?php if ($_item['week'] == ($_current_week=F3::get('current_week'))): ?>
+		
+			<div class="week"><h2>Week <?php echo $_item['week']; ?></h2></div>
+			
+		
+	<?php endif; ?>
+	<!-- is this a new day? If yes, print date, set current date -->
+	<?php if ($_item['week'] == ($_current_date=F3::get('current_date'))): ?>
+		
+			<span><i><?php echo $_item['date']; ?></i></span>
+		
+	<?php endif; ?>
+	<div>
+		<span><?php echo $_item['time']; ?></span>
+		<b><div class="edit" id="<?php echo $_item['id']; ?>"><?php echo $_item['title']; ?></div></b>
+	</div>
+<?php endforeach;endif;?>
+
+
+</body>
+</html>
