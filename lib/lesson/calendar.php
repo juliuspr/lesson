@@ -14,15 +14,9 @@ class Calendar {
 
 
 	/*
-<<<<<<< HEAD
 	* finds calendars for a user. Need to check for valid Id (here or in displayUsers?)
 	*/
 	static function getCalendarsByUser($userId) {
-=======
-	* finds calendars for a user. Need to chack for valid Id (here or in displayUsers?)
-	*/
-	static function getUserCalendars($userId) {
->>>>>>> 5587c69aa6118e98fefde03a451c6ab5ce1b6c20
 		return DB::sql('SELECT calendars.name, calendars.description, calendars.id FROM calendars WHERE calendars.owner_id = '.$userId);
 	}
 	
@@ -31,22 +25,14 @@ class Calendar {
 	}
 	
 	static function createCalendar() {
-<<<<<<< HEAD
 		if(DB::sql('INSERT INTO calendars () VALUES ()  '))
-=======
-		if(DB::sql('INSERT INTO calendars SET '))
->>>>>>> 5587c69aa6118e98fefde03a451c6ab5ce1b6c20
 			return true;
 		else
 			return false;
 	}
 	
 	static function updateCalendar() {
-<<<<<<< HEAD
 		if(DB::sql('UPDATE calendars SET something WHERE id='))
-=======
-		if(DB::sql('UPDATE calendars SET WHERE id='))
->>>>>>> 5587c69aa6118e98fefde03a451c6ab5ce1b6c20
 			return true;
 		else
 			return false;

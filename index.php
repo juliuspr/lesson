@@ -16,7 +16,7 @@ F3::set('CACHE',FALSE);
 // set to 0 on production site
 F3::set('DEBUG',1);
 F3::set('UI','ui/');
-F3::set('AUTOLOAD','lib/');
+F3::set('AUTOLOAD','lib/lesson/');
 
 //F3::set('ONERROR','myErrorHandler');
 function myErrorHandler() {
@@ -40,21 +40,15 @@ F3::set('DB',
 
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 // calendar CRUD etc
 // F3::route('GET /', function (){echo "thhis";});
 F3::route('GET /', 'CalendarController::displayAllCalendars');
-=======
-//display default start page. For now it is Julius' default calendar. Ultimately list users and their calendars
-F3::route('GET /', 'CalendarController::displayCalendar');
 
 // if calendar id is set then display particular calendar
 F3::route('GET /@calendarId', 'CalendarController::displayCalendar');
 F3::route('GET /users', 'UserController::displayAllUsers');
 F3::route('GET /user/@userId', 'Lesson::displayCalendars');
->>>>>>> 5587c69aa6118e98fefde03a451c6ab5ce1b6c20
 
 
 F3::route('GET /calendars', 'CalendarController::displayCalendars');
@@ -72,20 +66,7 @@ F3::route('POST /calendar/delete/@calendarId', 'CalendarController::deleteCalend
 // user CRUD etc.
 F3::route('GET /users', 'UserController::displayAllUsers');
 F3::route('GET /user/@userId', 'UserController::displayUser');
-=======
-//display default start page. For now it is Julius' default calendar. Ultimately list users and their calendars
-F3::route('GET /', 'Lesson::displayCalendar');
 
-// if calendar id is set then display particular calendar
-F3::route('GET /@calendarId', 'Lesson::displayCalendar');
-F3::route('GET /users', 'Lesson::displayAllUsers');
-F3::route('GET /user/@userId', 'Lesson::displayCalendars');
-
-
-// create admin site to create new calendars, to edit existing ones, archive/delete old ones.
-// F3::route('GET /admin', 'Lesson::displayAdmin');
-// F3::route('GET /admin/new-calendar', 'Lesson::newCalendar');
->>>>>>> parent of 2a5fde2... moving files to sufolder, splitting plugin into several files
  
 
  

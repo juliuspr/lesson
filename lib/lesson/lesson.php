@@ -19,12 +19,8 @@ class Lesson {
 	// retrieves entries for lessons from the database.  Returns array from DB with lessons
 	// input: calendarId
 	// output: array of lessons for given calendar
-<<<<<<< HEAD
-	static function getLessonsForCalendar($calendarId) {
-=======
-	static function getLessons($calendarId) {
->>>>>>> 5587c69aa6118e98fefde03a451c6ab5ce1b6c20
-	
+
+	static function getLessonsForCalendar($calendarId) {	
 		// proceed to select events for given calendar
 		return DB::sql('SELECT 
 				title, 
@@ -44,13 +40,10 @@ class Lesson {
 				asc');
 	}
 	
-<<<<<<< HEAD
 	static function getLesson($id) {
 		return DB::sql('SELECT * FROM events WHERE id='.$id);
 	}
 	
-=======
->>>>>>> 5587c69aa6118e98fefde03a451c6ab5ce1b6c20
 	static function book() {
 	
 		$lesson = new Axon('events');
