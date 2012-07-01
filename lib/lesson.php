@@ -27,7 +27,7 @@ class Lesson {
 		
 		// set current week
 		$currentWeek = 0;
-		
+		$weeks = array();
 		// go though all entries
 		foreach(F3::get('lessons') as $row) {
 			// if current week is not the same as running week add it to array
@@ -110,6 +110,8 @@ class Lesson {
 	static function display() {
 		
 		Lesson::getLessons();
+		if(!F3::get('lessons'))
+			echo 'No upcoming lessons...';
 		Lesson::getWeekNumbers();
 		
 		echo Template::serve('template.htm');
