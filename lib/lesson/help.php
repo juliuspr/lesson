@@ -18,12 +18,10 @@ class Help {
 		return $str;
 	}
 	
-<<<<<<< HEAD
+
 	static function deleteConfirmed() {
 	
 	
 	}
-=======
-	
->>>>>>> 5587c69aa6118e98fefde03a451c6ab5ce1b6c20
+
 }

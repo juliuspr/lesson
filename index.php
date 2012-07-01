@@ -16,7 +16,7 @@ F3::set('CACHE',FALSE);
 // set to 0 on production site
 F3::set('DEBUG',1);
 F3::set('UI','ui/');
-F3::set('AUTOLOAD','lib/lesson/');
+F3::set('AUTOLOAD','lib/, lib/lesson');
 
 //F3::set('ONERROR','myErrorHandler');
 function myErrorHandler() {
