@@ -43,7 +43,7 @@ F3::set('DB',
 
 // calendar CRUD etc
 // F3::route('GET /', function (){echo "thhis";});
-F3::route('GET /', 'CalendarController::displayAllCalendars');
+F3::route('GET /', 'CalendarController::displayCalendars');
 
 // if calendar id is set then display particular calendar
 F3::route('GET /@calendarId', 'CalendarController::displayCalendar');
