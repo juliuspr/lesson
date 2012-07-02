@@ -1,6 +1,8 @@
 <?php
 
 require __DIR__.'/lib/base.php';
+require __DIR__.'/config.php';
+
 
 F3::set('CACHE',FALSE);
 F3::set('DEBUG',1);
@@ -10,8 +12,8 @@ F3::set('AUTOLOAD','lib/');
 F3::set('DB',
 	new DB(
 			'mysql:host=localhost;port=3306;dbname=horner_frog',
-			'horner',
-			'42154215'
+			$username,
+			$password
 			)
 );
 
