@@ -1,6 +1,6 @@
 <?php
 
-// suggestions for name: virtual signup sheet, electronic signup sheet, digital, simple signup sheet
+// suggestions for name: simple lesson signup sheet
 // there are problems with last and first weeks of the year. events are not displayed...
 // make one master html template (stylesheets, javascript, header, footer) and then do the rest of the stuff in includes (read about this)
 // private calendars
