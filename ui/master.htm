@@ -11,16 +11,11 @@
 	<script type="text/javascript"
 				src="/min?base={@GUI}js/&amp;files=jquery.js,myjs.js">
 			</script> -->
-	<title>User list</title>
+	<title>Lesson booking - <?php echo F3::get('calendar["name"]'); ?></title>
 </head>
 <body>
-	<ul>
-	<F3:repeat group="{{@calendars}}" value="{{@item}}">
-		<li>
-			<a href="{{@BASE}}/calendar/{{@item.id}}">{{@item.name}}</a>
-		</li>
-	</F3:repeat>
-	</ul>
+
+<F3:include href="{{@content}}"/>
 
 </body>
 </html>

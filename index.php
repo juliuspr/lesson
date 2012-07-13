@@ -53,6 +53,8 @@ F3::route('GET /user/@userId', 'Lesson::displayCalendars');
 
 F3::route('GET /calendars', 'CalendarController::displayCalendars');
 F3::route('GET /calendar/@calendarId', 'CalendarController::displayCalendar');
+F3::route('GET /calendar/all', 'CalendarController::displayCalendars');
+
 
 F3::route('GET /calendar/new', 'CalendarController::newCalendar');
 F3::route('POST /calendar/new', 'CalendarController::newCalendar');

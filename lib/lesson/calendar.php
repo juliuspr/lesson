@@ -16,8 +16,13 @@ class Calendar {
 	/*
 	* finds calendars for a user. Need to check for valid Id (here or in displayUsers?)
 	*/
-	static function getCalendarsByUser($userId) {
+	static function getUserCalendars($userId) {
 		return DB::sql('SELECT calendars.name, calendars.description, calendars.id FROM calendars WHERE calendars.owner_id = '.$userId);
+	}
+	
+	static function getPublicCalendars() {
+		// add WHERE visibility = 'public'
+		return DB::sql('SELECT name, id FROM calendars');
 	}
 	
 	static function getCalendarById($calendarId) {

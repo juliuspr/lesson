@@ -38,7 +38,7 @@ class CalendarController {
 	/*
 	* displays calendars for a specified user. Takes id from global variable 
 	*/
-	static function displayCalendars() {
+	static function displayUserCalendars() {
 		if(User::verifyUserId()) {
 			F3::set('calendars', Calendar::getUserCalendars(F3::get('PARAMS["userId"]')));
 			echo Template::serve('display_calendars.htm');
@@ -46,6 +46,15 @@ class CalendarController {
 		} else {
 			echo Template::serve('error.htm');
 		}
+	}
+	
+	/*
+	* displays calendars for a specified user. Takes id from global variable 
+	*/
+	static function displayCalendars() {
+		F3::set('calendars', Calendar::getPublicCalendars());
+		F3::set('content', 'display_calendars.htm');
+		echo Template::serve('master.htm');
 	}
 	
 	static function newCalendar() {
