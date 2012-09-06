@@ -2,10 +2,10 @@
 // config.php
 // database login information
 
-$username = 'horner';
-$password = '42154215';
+$username = '';
+$password = '';
 
-$db_name = 'horner_frog';
+$db_name = '';
 $table_prefix = 'lesson_';
 
 if ($_SERVER['HTTP_HOST'] == 'localhost') {
