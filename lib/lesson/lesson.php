@@ -53,7 +53,7 @@ class Lesson {
 		$lesson->title = Help::filterInput($_POST['title']);
 		$lesson->save();
 		
-		// this echoes what user inputed, and avoids pulling it from database.
+		// this prints out into input=text field what the user has sent, and avoids pulling it from database.
 		echo $lesson->title;
 		
 		//$lesson->email();

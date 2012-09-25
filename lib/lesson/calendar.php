@@ -29,8 +29,9 @@ class Calendar {
 		return DB::sql('SELECT name, description from calendars WHERE id='.$calendarId);
 	}
 	
-	static function createCalendar() {
-		if(DB::sql('INSERT INTO calendars () VALUES ()  '))
+	static function createCalendar($name, $owner) {
+		// write checking if $name and $owner are legal values
+		if(DB::sql('INSERT INTO calendars (name, owner) VALUES ($name, $owner)  '))
 			return true;
 		else
 			return false;
@@ -49,6 +50,14 @@ class Calendar {
 			return true;
 		else
 			return false;
+	}
+	
+	static function verifyOwner($ownerId) {
+	
+	}
+	
+	static function verifyCalendarName($calendarName) {
+	
 	}
 
 }
