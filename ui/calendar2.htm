@@ -26,7 +26,7 @@
 	foreach($lessons as $lesson) {
 		
 		if($current_week != $lesson['week']) {
-			echo '<div class="week-wrapper" style="float:left; padding-right:120px"><div style="clear:both" class="week"><h2 style="padding-bottom: 0px; margin-bottom: 5px;">Week '.$lesson['week'].'</h2></div>';
+			echo '<div class="week-wrapper"><div style="clear:both" class="week"><h2 style="padding-bottom: 0px; margin-bottom: 5px;">Week '.$lesson['week'].'</h2></div>';
 			$current_week = $lesson['week'];
 		}
 		
