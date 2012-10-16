@@ -2,48 +2,117 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	
 	<script src="../ui/js/jquery.js" type="text/javascript"></script>
 	<script src="../ui/js/jquery-ui.js" type="text/javascript"></script>
 	<script src="../ui/js/jeditable.js" type="text/javascript"></script>  
-	<script src="../ui/js/myjs.js" type="text/javascript"></script>  
-	<!--
-	<script type="text/javascript"
-				src="/min?base={@GUI}js/&amp;files=jquery.js,myjs.js,jquery-ui.js,jeditable.js">
-			</script> -->
+	<script src="../ui/js/underscore.js" type="text/javascript"></script>  
+	<script src="../ui/js/backbone.js" type="text/javascript"></script>  
+
+	<style type="text/css">
+	h2 {
+		padding-bottom: 0px; 
+		margin-bottom: 5px;
+	}
+	h4 {
+		clear:both; 
+		padding:5px; 
+		padding-bottom: 0px;
+		margin:0px;
+		margin-top:5px;
+		font-style: italic;
+	}
+	
+	#weeks-container {
+	}
+	.week {
+		clear: both;
+	}
+	.day {
+		width: 120px;
+		float: left;
+	}
+	.lesson-time {
+		float: left;
+		padding-right:5px;
+	}
+	.lesson-title {
+		display:inline; float: left;
+		clear: both;
+	}
+	.lessons {
+		display:block; 
+		padding:5px; 
+		padding-left:15px; 
+		margin-bottom:20px;
+	}
+	
+	
+	
+	</style>
 	<title>Lesson booking - <?php echo F3::get('calendar["name"]'); ?></title>
 </head>
 <body>
-<h2><?php echo F3::get('calendar["name"]'); ?></h2>
-<?php 
-	$lessons = F3::get('lessons');
-
-	$current_week = 0;
-	$current_date = '';
-	?>
-	<div id="weeks-container">
-	<?php
-	foreach($lessons as $lesson) {
-		
-		if($current_week != $lesson['week']) {
-			echo '<div class="week-wrapper"><div style="clear:both" class="week"><h2 style="padding-bottom: 0px; margin-bottom: 5px;">Week '.$lesson['week'].'</h2></div>';
-			$current_week = $lesson['week'];
-		}
-		
-		if($current_date!=$lesson['date']) {
-			echo '<h4 style="clear:both; padding:5px; padding-bottom: 0px;margin:0px;margin-top:5px;"><i>'.$lesson['date'].'</i></h4>';
-			$current_date = $lesson['date'];
-		}
-			
-?>
-		<div style="display:block; padding:5px; padding-left:15px;">
-			<span style="float:left; padding-right:5px;"><?php echo $lesson['time']; ?></span>
-			<span style="display:inline; float: left" class="edit" id="<?php echo $lesson['id']; ?>"><?php echo $lesson['title']; ?></span>
-		</div><br /></div>
-<?php	
-	}
+	<h2><?php echo F3::get('calendar["name"]'); ?></h2>
 	
-?>
-</div>
+	<?php 
+	$lessons = F3::get('lessons');
+	?>
+	<div id="weeks-container"></div>
+	<script>
+		var arr = <?php echo json_encode($lessons); ?>;
+		
+		$(document).ready(function() {
+		
+		// takes in d-m-Y, returns Y-m-d. unused
+		function format_date(date) {
+			var new_date = '2013-05-01';
+			return new_date;
+		}
+		
+		var current_week = 0;
+		var current_date = '';
+		
+		_.each(arr, function(lesson){
+		
+			_.each(lesson, function(k, i) {
+			
+				if(current_week != lesson['week']) {
+					$('#weeks-container').append($('<div>').addClass('week-' + lesson['week'] + '-wrapper week').html('<h2>Week ' + lesson['week'] + '</h2>'));
+					current_week = lesson['week'];
+				}
+				
+				// clean up the crap, unnecesary date calculations make php put normal date in json and do all the calculations from these in js
+				date1 = lesson['date'].split(', ');
+				date2 = date1[1].split('.');
+				month = date2[1].length < 2 ? '0'+date2[1] : date2[1];
+				day = date2[0].length < 2 ? '0'+date2[0] : date2[0];
+				date3 = lesson['year'] + '-' +  month + '-' + day;
+				
+				
+				
+				if(current_date!=lesson['date']) {
+					
+					$('.week-' + lesson['week'] + '-wrapper').append($('<div>').addClass('day-' + date3 + '-wrapper day').html('<h4>'+lesson['date']+'</h4>'));
+					$('.day-' + date3 +'-wrapper').append('<div></div>').addClass('lessons');
+				
+					current_date = lesson['date'];
+				}
+				console.log(i + ' ' + lesson[i]);
+			});
+			
+			$('.day-' + date3 + '-wrapper > div').append('<div class="lesson-time">' + lesson['time'] + '</div> ');
+			$('.day-' + date3 + '-wrapper > div').append('<div class="leeson-title edit" id="' + lesson['id'] + '">' + lesson['title'] + '</div>');
+		});
+		
+
+	$('div.edit').editable('/lesson/book', {
+         indicator : 'Saving...',
+         tooltip   : 'Click to enter your name...',
+		 name		:	'title'
+     });
+	});
+	</script>
+
+	
 </body>
 </html>
