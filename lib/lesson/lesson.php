@@ -25,7 +25,8 @@ class Lesson {
 		return DB::sql('SELECT 
 				title, 
 				YEAR(event_date) as year, 
-				DATE_FORMAT(event_date, "%W, %e.%c") as date, 
+				DATE_FORMAT(event_date, "%W, %e.%c") as datef, 
+				DATE_FORMAT(event_date, "%Y-%m-%d") as date, 
 				DATE_FORMAT(event_date, "%H:%i") as time, 
 				WEEK(event_date) as week, 
 				id  

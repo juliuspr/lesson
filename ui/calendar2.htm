@@ -81,27 +81,19 @@
 					current_week = lesson['week'];
 				}
 				
-				// clean up the crap, unnecesary date calculations make php put normal date in json and do all the calculations from these in js
-				date1 = lesson['date'].split(', ');
-				date2 = date1[1].split('.');
-				month = date2[1].length < 2 ? '0'+date2[1] : date2[1];
-				day = date2[0].length < 2 ? '0'+date2[0] : date2[0];
-				date3 = lesson['year'] + '-' +  month + '-' + day;
-				
-				
 				
 				if(current_date!=lesson['date']) {
 					
-					$('.week-' + lesson['week'] + '-wrapper').append($('<div>').addClass('day-' + date3 + '-wrapper day').html('<h4>'+lesson['date']+'</h4>'));
-					$('.day-' + date3 +'-wrapper').append('<div></div>').addClass('lessons');
+					$('.week-' + lesson['week'] + '-wrapper').append($('<div>').addClass('day-' + lesson['date'] + '-wrapper day').html('<h4>'+lesson['datef']+'</h4>'));
+					$('.day-' + lesson['date'] +'-wrapper').append('<div></div>').addClass('lessons');
 				
 					current_date = lesson['date'];
 				}
 				console.log(i + ' ' + lesson[i]);
 			});
 			
-			$('.day-' + date3 + '-wrapper > div').append('<div class="lesson-time">' + lesson['time'] + '</div> ');
-			$('.day-' + date3 + '-wrapper > div').append('<div class="leeson-title edit" id="' + lesson['id'] + '">' + lesson['title'] + '</div>');
+			$('.day-' + lesson['date'] + '-wrapper > div').append('<div class="lesson-time">' + lesson['time'] + '</div> ');
+			$('.day-' + lesson['date'] + '-wrapper > div').append('<div class="leeson-title edit" id="' + lesson['id'] + '">' + lesson['title'] + '</div>');
 		});
 		
 
