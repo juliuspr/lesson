@@ -33,7 +33,7 @@ class Lesson {
 			FROM 
 				events
 			WHERE
-				event_date > NOW()
+				DATE(event_date) >= DATE(NOW())
 				AND
 				calendar_id = '.$calendarId.'
 			ORDER BY
