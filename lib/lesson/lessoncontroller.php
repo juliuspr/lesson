@@ -8,7 +8,7 @@
 	class LessonController:
 		displayLesson()
 		newLesson()
-		editLesson()
+		updateLesson()
 		emailBookedLesson()
 **/
 
@@ -49,11 +49,6 @@ class LessonController {
 	
 	}
 	
-	static function displayLesson($id) {
-	
-		Lesson::getLessons($id); //this doesn't work yet because getLessons doesn't accept id
-		echo Template::serve();
-	}
 
 }
 

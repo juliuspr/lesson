@@ -24,37 +24,39 @@
 	h4 {
 		clear:both; 
 		color: #60060A;
-		padding:5px; 
-		padding-bottom: 0px;
+		padding:10px; 
+		padding-bottom:0px;
 		margin:0px;
 		margin-top:5px;
+		margin-left:20px;
 		font-style: italic;
 		font-family: serif;
-		text-transform: uppercase;
+		font-size:1.4em;
 	}
 	#message {
 		color: #60060A;
 		font-family: sans-serif;
 		background-color: yellow;
 		position: absolute;
-		bottom: 0px;
+		top: 0px;
 		left: 20px;
-		height: 200px;
+		height: 15px;
 		vertical-align: bottom;
 		padding:10px;
 		display:none;
 		opacity: 0.9;
-		-webkit-border-top-left-radius: 20px;
-		-webkit-border-top-right-radius: 20px;
-		-moz-border-radius-topleft: 20px;
-		-moz-border-radius-topright: 20px;
-		border-top-left-radius: 20px;
-		border-top-right-radius: 20px;
+		-webkit-border-bottom-right-radius: 20px;
+		-webkit-border-bottom-left-radius: 20px;
+		-moz-border-radius-bottomright: 20px;
+		-moz-border-radius-bottomleft: 20px;
+		border-bottom-right-radius: 20px;
+		border-bottom-left-radius: 20px;
 	}
 	div {
 		font-family: sans-serif;
 	}
 	#weeks-container {
+	
 	}
 	.week {
 		clear: both;
@@ -66,9 +68,15 @@
 		width: 250px;
 		float: left;
 	}
+	
+	.item {
+		padding:5px;
+		margin:5px;
+		cursor: pointer;
+	}
+	
 	.lesson-time {
-		clear: both;
-		float: left;
+		display:inline;
 		padding:5px;
 		margin: 5px;
 		background-color: #FFA4A8;
@@ -78,11 +86,12 @@
 		border-radius: 5px;
 	}
 	.lesson-title {
-		
+		display:inline;
 		padding: 5px;
 		margin: 5px;
-		float:left;
+		line-height: 30px;
 	}
+	
 	.lesson-title form {
 
 	}
@@ -95,8 +104,6 @@
 	}
 	
 	.lesson-title form input {
-		width: 50px;
-		float: left;
 	}
 	.lessons {
 		display:block; 
@@ -110,6 +117,15 @@
 		color: #9DFF93;
 	}
 	
+	.group-activity {
+		background-color: #6F8D6C;
+		color: #9DFF93;
+	}
+	.important {
+		font-weight:bold;
+		font-style: italic;
+		color: #066056;
+	}
 	</style>
 	<title>Lesson booking - <?php echo F3::get('calendar["name"]'); ?></title>
 </head>
@@ -124,52 +140,55 @@
 	var arr = <?php echo json_encode($lessons); ?>;
 		
 	$(document).ready(function() {
-
 		
 		var current_week = 0;
 		var current_date = '';
+		var k = 0;
 		
 		_.each(arr, function(lesson){
-		
 			_.each(lesson, function(k, i) {
 			
 				if(current_week != lesson['week']) {
-					$('#weeks-container').append($('<div>').addClass('week-' + lesson['week'] + '-wrapper week').html('<h2>Week ' + lesson['week'] + '</h2>'));
+					$('#weeks-container').append($('<div></div>').addClass('week-' + lesson['week'] + ' week').html('<h2>Week ' + lesson['week'] + '</h2>'));
 					current_week = lesson['week'];
+					
 				}
-				
 				
 				if(current_date!=lesson['date']) {
-					
-					$('.week-' + lesson['week'] + '-wrapper').append($('<div></div>').addClass('day-' + lesson['date'] + '-wrapper day').html('<h4>'+lesson['datef']+'</h4>'));
-					$('.day-' + lesson['date'] +'-wrapper').append('<div></div>').addClass('lessons');
+					$('.week-' + lesson['week']).append($('<div></div>').addClass('day-' + lesson['date'] + ' day').html('<h4>'+lesson['datef']+'</h4>'));
+					$('.day-' + lesson['date']).append($('<div></div>').addClass('lessons'));
 				
 					current_date = lesson['date'];
-				}
-				console.log(i + ' ' + lesson[i]);
-			});
-			
-			//$('.day-' + lesson['date'] + '-wrapper > div').append('<div></div>');
-			
-			$('.day-' + lesson['date'] + '-wrapper > div')
+				}	
+			}); // end of inner each loop
+					
+			$('.day-' + lesson['date'] + ' > div.lessons').append(
+				$('<div></div>').addClass('item')
 				.append('<div class="lesson-time">' + lesson['time'] + '</div>')
-				.append('<div class="lesson-title edit" id="' + lesson['id'] + '">' + lesson['title'] + '</div>');
-				
-				
-				
-			$('.day-' + lesson['date'] + '-wrapper div .lesson-title')
-			.filter(function() {
-				if(!$(this).text().length)
-					return $(this);
-			}).prev().addClass('available');
-		});
+				.append('<div class="lesson-title edit" id="' + lesson['id'] + '">' + lesson['title'] + '</div>')
+			);
+		}); // end of outer each loop
+		
+		
+		
+		
+		$('.lesson-title').filter(function() {
+			if(!$(this).text().length)
+				return $(this);
+		}).prev().addClass('available');
+		
+		$('.lesson-title:contains("Skalaer"), .lesson-title:contains("Klassetime")')
+			.addClass('important').prev().addClass('group-activity');
+
+	
 		
 		$('.lesson-time').click(function() {
 			// trigger the jeditable event on this.sibling
 			$(this).next().trigger('click');
 		});
 		
-		
+					///////////////////////////////////////////////////////////////////////
+			
 		function successMessage() {
 			$('#message').text('Changes saved successfully!').slideDown( function() {
 				$(this).delay(2000).slideUp();
@@ -182,7 +201,7 @@
 			 name	:	'title',
 			 submit	:	'OK',
 			 style	:	'display:inline',
-			 width	:	75,
+			 width	:	60,
 			 callback:	function(value, settings) {
 				if(!value.length) {
 					
