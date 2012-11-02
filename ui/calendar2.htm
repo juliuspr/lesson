@@ -127,6 +127,7 @@
 		color: #066056;
 	}
 	</style>
+	<link rel="stylesheet" type="text/css" src="../ui/foundation/stylesheets/foundation.css">
 	<title>Lesson booking - <?php echo F3::get('calendar["name"]'); ?></title>
 </head>
 <body>
@@ -164,7 +165,7 @@
 					
 			$('.day-' + lesson['date'] + ' > div.lessons').append(
 				$('<div></div>').addClass('item')
-				.append('<div class="lesson-time">' + lesson['time'] + '</div>')
+				.append('<div class="lesson-time round label">' + lesson['time'] + '</div>')
 				.append('<div class="lesson-title edit" id="' + lesson['id'] + '">' + lesson['title'] + '</div>')
 			);
 		}); // end of outer each loop
