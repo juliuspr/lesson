@@ -28,7 +28,7 @@ class Lesson {
 				DATE_FORMAT(event_date, "%W, %e.%c") as datef, 
 				DATE_FORMAT(event_date, "%Y-%m-%d") as date, 
 				DATE_FORMAT(event_date, "%H:%i") as time, 
-				WEEK(event_date) as week, 
+				WEEK(event_date, 3) as week, 
 				id  
 			FROM 
 				events
