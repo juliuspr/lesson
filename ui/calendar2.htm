@@ -8,6 +8,7 @@
 	<script src="../ui/js/jeditable.js" type="text/javascript"></script>  
 	<script src="../ui/js/underscore.js" type="text/javascript"></script>  
 	<script src="../ui/js/backbone.js" type="text/javascript"></script>  
+	<script src="../ui/js/moment.min.js" type="text/javascript"></script>  
 	
 	<!--  http://colorschemedesigner.com/#2N41SdA--U8jT -->
 	<style type="text/css">
@@ -32,7 +33,7 @@
 		margin-left:20px;
 		font-style: italic;
 		font-family: serif;
-		font-size:1.4em;
+		font-size:1.2em;
 	}
 	#message {
 		color: #60060A;
@@ -66,8 +67,11 @@
 	.week:nth-child(odd) {
 	}
 	.day {
-		width: 250px;
-		float: left;
+		width: 300px;
+		clear: both;
+		border: 1px solid grey;
+
+		vertical-align: top;
 	}
 	
 	.item {
@@ -127,8 +131,10 @@
 		font-style: italic;
 		color: #066056;
 	}
+
 	</style>
 	<link rel="stylesheet" type="text/css" src="../ui/foundation/stylesheets/foundation.css">
+	
 	<title>Lesson booking - <?php echo F3::get('calendar["name"]'); ?></title>
 </head>
 <body>
@@ -147,29 +153,62 @@
 		var current_date = '';
 		var k = 0;
 		
+		
+		// find first week
+		// find last week
+		// for loop and add each week
+		// inside the first for loop another for loop to make days
+		
+		var first_week = 53;
+		var last_week = 0;
 		_.each(arr, function(lesson){
-			_.each(lesson, function(k, i) {
+			if(lesson['week'] > last_week) {
+				last_week = lesson['week'];
+			}
+			if(lesson['week'] < first_week) {
+				first_week = lesson['week'];
+			}
+		});
+		
+		var date = '0';
+		for(var week = first_week; week <= last_week; week++) {
+		
+			var monday = moment().isoWeek(week).isoWeekday(1); // get monday of the week
 			
-				if(current_week != lesson['week']) {
-					$('#weeks-container').append($('<div></div>').addClass('week-' + lesson['week'] + ' week').html('<h2>Week ' + lesson['week'] + '</h2>'));
-					current_week = lesson['week'];
-					
+			var table = $('<table></table>').addClass('week-' + week + ' week');
+			table.append($('<th></th>')).html('<h2>Week ' + week + '</h2>');
+			var row = $('<tr></tr>');
+			var row2 = $('<tr></tr>');
+			for(var day = 0; day < 7; day++) {
+				date = moment(monday).add('days', day).format('YYYY-MM-DD');
+				
+				var column = $('<td></td>').addClass('day-' + date + ' day').html('<h4>'+moment(date).format('dddd, MMMM DD')+'</h4>');
+				column.append($('<div></div>').addClass('lessons'));
+				
+				if(day > 3) {
+					row2.append(column);
+				} else {
+					row.append(column);
 				}
-				
-				if(current_date!=lesson['date']) {
-					$('.week-' + lesson['week']).append($('<div></div>').addClass('day-' + lesson['date'] + ' day').html('<h4>'+lesson['datef']+'</h4>'));
-					$('.day-' + lesson['date']).append($('<div></div>').addClass('lessons'));
-				
-					current_date = lesson['date'];
-				}	
-			}); // end of inner each loop
-					
+
+			}
+
+			table.append(row);
+			table.append(row2);
+			
+			$('#weeks-container').append(table);
+		}
+
+		
+		
+		
+		_.each(arr, function(lesson){
 			$('.day-' + lesson['date'] + ' > div.lessons').append(
 				$('<div></div>').addClass('item')
 				.append('<div class="lesson-time round label">' + lesson['time'] + '</div>')
 				.append('<div class="lesson-title edit" id="' + lesson['id'] + '">' + lesson['title'] + '</div>')
 			);
-		}); // end of outer each loop
+		}); 
 		
 		
 		
